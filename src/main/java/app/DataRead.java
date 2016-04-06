@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Hashtable;
@@ -27,10 +28,19 @@ public class DataRead {
 	private static String[] airport_Names = new String[NUMBER_OF_AIRPORTS];
 	private static String[] airport_ID = new String[NUMBER_OF_AIRPORTS];
 
+	public static String[] getAirportNames(){
+		Arrays.sort(airport_Names);
+		return airport_Names;
+	}
+	
+	public static String[] getAirline(){
+		Arrays.sort(airline_Names);
+		return airline_Names;
+	}
+	
 	// should be a hashtable, not an array
 	// DataAccess will use this function to make a hash table within the
 	// DataAccess class
-
 	public static Hashtable<Key, FlightEvent> getEvents() {
 		// reads data from other files
 		readUniqueAirline();
@@ -54,38 +64,44 @@ public class DataRead {
 
 				// gets data from the row
 				String[] data = line.split(cvsSplitBy);
-				
-				// gets the date information
-				String[] date = data[0].split("-");
-				int year = Integer.parseInt(date[0]);
-				int month = Integer.parseInt(date[1]);
-				int dateNumber = Integer.parseInt(date[2]);
-				if(data.length < 4)
+				if (data.length !=6)
 					System.out.println(line);
-				Date day = new Date(year, month, dateNumber);
+				assert data.length == 6;
+				// gets the date information
+				Date day = parseDate(data[0]);
 
 				// gets the airline information
 				int indexOFAirline = Arrays.binarySearch(airline_ID, data[1]);
 				if (!(indexOFAirline < 0)){
 					String airline = airline_Names[indexOFAirline];
 	
-					//
-					int indexOFAirport = Arrays.binarySearch(airport_ID, data[2]);
-					assert indexOFAirport >= 0;
-					String airport = airport_Names[indexOFAirport];
+					
+					int indexOrigin = Arrays.binarySearch(airport_ID, data[2]);
+					assert indexOrigin >= 0;
+					String originAirport = airport_Names[indexOrigin];
 	
+					int indexDest = Arrays.binarySearch(airport_ID, data[3]);
+					assert indexDest >= 0;
+					String destAirport = airport_Names[indexDest];
+					
 					// gets the delay time (in minutes) information
 					// not so sure about using the int type; maybe should be some
 					// sort of special time type
-					int time = (int)Double.parseDouble(data[3]);
-	
+					int depDelay = (int)Double.parseDouble(data[4]);
+					int arrDelay = (int)Double.parseDouble(data[5]);
+
 					// creates the flight and key object that will be put into the
 					// hash table
-					FlightEvent flight = new TakeOff(day, time, airport, airline);
-					Key key = new Key(airline, airport);
+					FlightEvent takeOff = new TakeOff(day, depDelay, originAirport, airline);
+					Key takeOffKey = new Key(airline, originAirport);
 	
+					FlightEvent landing = new Landing(day, arrDelay, destAirport, airline);
+					Key landingKey = new Key(airline, destAirport);
+					
 					// puts the objects into the hash table
-					flightEvents.put(key, flight);
+					flightEvents.put(takeOffKey, takeOff);
+					flightEvents.put(landingKey, landing);
+
 				}
 			}
 
@@ -210,5 +226,14 @@ public class DataRead {
 			System.out.println(s+ " doesn't have quotes");
 		assert s.charAt(0) == '"' && s.charAt(lastIndex) == '"';
 		return s.substring(1,lastIndex);
+	}
+	
+	private static Date parseDate(String s){
+		String[] date = s.split("-");
+		int year = Integer.parseInt(date[0]);
+		int month = Integer.parseInt(date[1]);
+		int dateNumber = Integer.parseInt(date[2]);
+		Date parsed = new Date(year, month, dateNumber);
+		return parsed;
 	}
 }

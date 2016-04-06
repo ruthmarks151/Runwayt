@@ -57,8 +57,12 @@ public class DataAccess {
 	public static TakeOff getTakeOff(String airport, String airline, Date date) {
 		assert prepared;
 		TreeMap<Date,TakeOff> airportTakeOffs= takeOffs.get(airport);
+		if (airportTakeOffs == null)
+			System.out.println(airport);
 		assert airportTakeOffs != null;
 		Date closest = airportTakeOffs.ceilingKey(date);
+		if (closest == null)
+			closest = airportTakeOffs.floorKey(date);
 		assert closest != null;
 		return airportTakeOffs.get(closest);
 	}
@@ -75,6 +79,8 @@ public class DataAccess {
 		TreeMap<Date,Landing> airportLandings= landings.get(airport);
 		assert airportLandings != null;
 		Date closest = airportLandings.ceilingKey(date);
+		if (closest == null)
+			closest = airportLandings.floorKey(date);
 		assert closest != null;
 		return airportLandings.get(closest);
 	}

@@ -10,130 +10,106 @@ import java.util.ArrayList;
  *
  */
 public class DelayProfile {
+
+	private final int minDelay = -90;
+	private final int maxDelay = 300;
+	private final int delta = 5;
+	private final int numEl = (maxDelay - minDelay) / delta;
+	int maxIndex = 0;
 	// these two should be the same length
-	ArrayList<Integer> delays = new ArrayList<Integer>(); // [0,5,10,30,120]
-															// delays of 0 time,
-															// less than 5 mins,
-															// less than 10...
-	ArrayList<Integer> takeOffAmounts = new ArrayList<Integer>(); // [10,4,2,0,1]
-																	// numbers
-																	// of take
-																	// off
-																	// delays
-																	// for this
-																	// flight
-	ArrayList<Integer> landingAmounts = new ArrayList<Integer>(); // [15,0,2,0,0]
-																	// numbers
-																	// of
-																	// landing
-																	// delays
-																	// for this
-																	// flight
+	int[] delays = new int[numEl]; // [0,5,10,30,120]
+									// delays of 0 time,
+									// less than 5 mins,
+									// less than 10...
+	int[] frequencies = new int[numEl]; // [10,4,2,0,1] numbers of take off delays  for this flight
 
 	public DelayProfile() {
-
-		delays.add(0);
-		delays.add(5);
-		delays.add(10);
-		delays.add(30);
-		delays.add(60);
-		delays.add(120);
-
-		takeOffAmounts.add(0);
-		takeOffAmounts.add(0);
-		takeOffAmounts.add(0);
-		takeOffAmounts.add(0);
-		takeOffAmounts.add(0);
-		takeOffAmounts.add(0);
-
-		landingAmounts.add(0);
-		landingAmounts.add(0);
-		landingAmounts.add(0);
-		landingAmounts.add(0);
-		landingAmounts.add(0);
-		landingAmounts.add(0);
+		for (int i = 0; i < numEl; i++) {
+			delays[i] = minDelay + i * delta;
+			frequencies[i] = 0;
+		}
 	}
 
 	/**
 	 * Adds a new delay into the profile.
 	 * 
 	 * @param delay
-	 * @param takeOff
-	 *            whether the event of the delay is a take off (true) or not
-	 *            (false)
 	 */
-	public void addDelay(int delay, boolean takeOff) {
-		if (takeOff == true) {
-			if (delay >= 120) {
-				takeOffAmounts.set(5, takeOffAmounts.get(5) + 1);
-				
-			}
-			if (delay >= 60 && delay <120) {
-				takeOffAmounts.set(4, takeOffAmounts.get(4) + 1);
-				
-
-			}
-			if (delay >= 30 && delay <60) {
-				takeOffAmounts.set(3, takeOffAmounts.get(3) + 1);
-				
-			}
-			if (delay >= 10 && delay < 30) {
-				takeOffAmounts.set(2, takeOffAmounts.get(2) + 1);
-				
-			}
-			if (delay >= 5 && delay <10) {
-				takeOffAmounts.set(1, takeOffAmounts.get(1) + 1);
-				
-			}
-			if (delay <5) {
-				takeOffAmounts.set(0, takeOffAmounts.get(0) + 1);
-				
-
-			}
-		}
-		if (takeOff == false) {
-			if (delay >= 120) {
-				landingAmounts.set(5, landingAmounts.get(5) + 1);
-				
-
-			}
-			if (delay >= 60 && delay < 120) {
-				landingAmounts.set(4, landingAmounts.get(4) + 1);
-				
-			}
-			
-			if (delay >= 30 && delay < 60) {
-				landingAmounts.set(3, landingAmounts.get(3) + 1);
-				
-		
-			}
-			
-			if (delay >= 10 && delay < 30) {
-				landingAmounts.set(2, landingAmounts.get(2) + 1);
-				
-				
-			}
-			
-			if (delay >= 5 && delay <10) {
-				landingAmounts.set(1, landingAmounts.get(1) + 1);
-				
-				
-
-			}
-			
-
-			if (delay < 5) {
-				landingAmounts.set(0, landingAmounts.get(0) + 1);
-				
-				
-			}
-			
-			
-			
-			
+	public void addDelay(int delay) {
+		if (delay < minDelay)
+			frequencies[0]++;
+		else if (delay > maxDelay - delta)
+			frequencies[numEl-1]++;
+		else{
+			int index = (delay-minDelay)/delta;
+			frequencies[index]++;	
+			if (index > maxIndex)
+				maxIndex = index;
 		}
 	}
 	
+	public String delays(){
+		boolean primed = false;
+		StringBuilder sb = new StringBuilder();
+		sb.append("[ ");
+		for (int i = 0; i <= maxIndex; i++) {
+			if(primed){
+				sb.append(", ");
+				sb.append(delays[i]);
+			}else{
+				if (frequencies[i] > 0){
+					primed = true;
+					sb.append(delays[i]);
+				}
+			}
+		}
+		sb.append("]");
+		return sb.toString();
+	}
 	
+	public String freqs(){
+		boolean primed = false;
+		StringBuilder sb = new StringBuilder();
+		sb.append("[ ");
+		for (int i = 0; i <= maxIndex; i++) {
+			if(primed){
+				sb.append(", ");
+				sb.append(frequencies[i]);
+			}else{
+				if (frequencies[i] > 0){
+					primed = true;
+					sb.append(frequencies[i]);
+				}
+			}
+		}
+		sb.append("]");
+		return sb.toString();
+	}
+	
+	public String toString(){
+		boolean primed = false;
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i <= maxIndex; i++) {
+			if(primed){
+				sb.append(delays[i]);
+				sb.append(" :");
+				for (int j = 0; j < frequencies[i]; j++ ){
+					sb.append('O');
+				}
+				sb.append("<br>");
+			}else{
+				if (frequencies[i] > 0){
+					primed = true;
+					sb.append(delays[i]);
+					sb.append(" :");
+					for (int j = 0; j < frequencies[i]; j++ ){
+						sb.append('O');
+					}
+					sb.append("<br>");
+				}
+			}
+		}
+		return sb.toString();
+	}
 
 }
