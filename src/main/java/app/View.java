@@ -31,21 +31,18 @@ public class View {
 				+ "<body>\n"
 				+ "<script src=\"//raw.githubusercontent.com/nnnick/Chart.js/master/Chart.min.js\"></script>\n"
 				+ "<div class=\"container\">\n" 
-				+ "	<div class=\"row\">\n"
-				+ "		<div class=\"col-md-12\">\n" 
 				+ "			<h1 class=\"text-primary text-center\">\n"
 				+ "				Delay Projection\n" 
 				+ "			</h1>\n" 
 				+ chart(profile)
-				+ "		</div>\n" 
-				+ "	</div>\n" 
 				+ "</div>"
 				+ "</body>" 
 				+ "</html>";
 	}
 	
 	public static String chart(DelayProfile dp){
-		return  "<canvas id=\"myChart\" width=\"600px\" height=\"600px\"></canvas>\n" + 
+		return  "<div style=\"width:100%; height:100%;\"> "+
+				"<canvas id=\"myChart\" width=\"600px\" height=\"600px\"></canvas>\n" + 
 				"<script>"+
 				"var ctx = document.getElementById(\"myChart\").getContext(\"2d\");\n" + 
 				"var data = {\n" + 
@@ -64,6 +61,7 @@ public class View {
 				"    ]\n" + 
 				"};" +
 				"var myLineChart = new Chart(ctx).Line(data);\n"+
-				"</script>";
+				"</script>"+
+				"</div>";
 	}
 }

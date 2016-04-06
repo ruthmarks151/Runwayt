@@ -40,8 +40,6 @@ public class Controller {
 				+ "<link rel=\"stylesheet\" href=\"https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css\">\n" 
 				+ "<script src=\"https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js\"></script>"
 				+ "<div class=\"container\">\n" 
-				+ "	<div class=\"row\">\n"
-				+ "		<div class=\"col-md-12\">\n" 
 				+ "			<h1 class=\"text-primary text-center\">\n"
 				+ "				Runwayt\n" 
 				+ "			</h1>\n" 
@@ -67,9 +65,7 @@ public class Controller {
 				+ "				<button type=\"submit\" class=\"btn btn-default\">\n" 
 				+ "					Submit\n"
 				+ "				</button>\n" 
-				+ "			</form>\n" 
-				+ "		</div>\n" 
-				+ "	</div>\n" 
+				+ "			</form>\n"  
 				+ "</div>"
 				+ "</body>" + "</html>");
 		options("/", (req, res) -> {
