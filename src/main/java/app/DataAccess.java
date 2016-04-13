@@ -11,7 +11,8 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
  * Uses a hash table (generated using DataRead) to store the flights.
  * A bunch of specialized functions retrieve flights with various properties
  * i.e. close to the current flight 
- * @author 
+ * Uses {@link app.Key}, {@link app.FlightEvent}, {@link app.TakeOff}, 
+ * {@link app.Landing} 
  *
  */
 public class DataAccess {
@@ -84,11 +85,4 @@ public class DataAccess {
 		assert closest != null;
 		return airportLandings.get(closest);
 	}
-	
-	
-	//hash tables to store flight events; built in java one should work (need to ask)
-	//first keyed by the airport 
-	//second keyed by the airline string
-	//then an ArrayList of FlightEvents, sorted by date/time
-	//public static (hashtable) tableEvents;
 }

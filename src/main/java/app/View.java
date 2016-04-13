@@ -3,11 +3,17 @@ package app;
 //import static spark.Spark.*;
 
 /**
- * Shows the user the screen where the user can make choices and shows the output. 
- * @author Tanya
+ * Shows the user the screen where the user can make choices and shows the output.
+ * Uses {@link app.DelayProfile} 
  *
  */
 public class View {
+	
+	/**
+	 * Converts an array of strings into an options list for a drop-down menu.
+	 * @param list The list of strings which are options.
+	 * @return An html formatted string which lists the options for a given array of strings
+	 */
 	public static String optionString(String[] list){
 		StringBuilder sb = new StringBuilder();
 		for (String s:list){
@@ -20,6 +26,11 @@ public class View {
 	    return sb.toString();
 	}
 	
+	/**
+	 * Creates an html document based on a delay profile.
+	 * @param profile The delay profile to show.
+	 * @return An html document which shows the delay profile
+	 */
 	public static String chartPage(DelayProfile profile){
 		return "<!DOCTYPE html>" 
 				+ "<html>" 
@@ -40,7 +51,12 @@ public class View {
 				+ "</html>";
 	}
 	
-	public static String chart(DelayProfile dp){
+	/**
+	 * Creates a chart showing the delay profile.
+	 * @param dp The delay profile to be shown.
+	 * @return An html formatted string which shows a chart.
+	 */
+	private static String chart(DelayProfile dp){
 		return  "<div style=\"width:100%; height:100%;\"> "+
 				"<canvas id=\"myChart\" width=\"600px\" height=\"600px\"></canvas>\n" + 
 				"<script>"+

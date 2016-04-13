@@ -14,8 +14,8 @@ import java.util.Hashtable;
 /**
  * Reads the flight information from the file and puts it into a hash table. See
  * also DataAccess comments for more details.
- * 
- * @author
+ * Uses {@link app.Key}, {@link app.FlightEvent}, {@link app.TakeOff}, 
+ * {@link app.Landing}
  *
  */
 public class DataRead {
@@ -27,20 +27,29 @@ public class DataRead {
 	private final static int NUMBER_OF_AIRPORTS = 6368;
 	private static String[] airport_Names = new String[NUMBER_OF_AIRPORTS];
 	private static String[] airport_ID = new String[NUMBER_OF_AIRPORTS];
-
+	
+	/**
+	 * 
+	 * @return An array of Strings, containing the airport names, sorted.
+	 */
 	public static String[] getAirportNames(){
 		Arrays.sort(airport_Names);
 		return airport_Names;
 	}
 	
+	/**
+	 * 
+	 * @return An array of Strings, containing the airline names, sorted.
+	 */
 	public static String[] getAirline(){
 		Arrays.sort(airline_Names);
 		return airline_Names;
 	}
 	
-	// should be a hashtable, not an array
-	// DataAccess will use this function to make a hash table within the
-	// DataAccess class
+	/**
+	 * Used in {@link app.DataAccess}
+	 * @return A Hashtable of flight events, using the airline and airport as the key.
+	 */
 	public static Hashtable<Key, FlightEvent> getEvents() {
 		// reads data from other files
 		readUniqueAirline();
@@ -122,11 +131,9 @@ public class DataRead {
 		return flightEvents;
 
 	}
-
+	
 	/**
 	 * Writes the data from airline to an array
-	 * 
-	 * @return
 	 */
 	private static void readUniqueAirline() {
 

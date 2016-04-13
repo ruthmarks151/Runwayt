@@ -5,8 +5,7 @@ import java.util.ArrayList;
 /**
  * A representation of the profile which we will show to the user. We bin the
  * delays into different amounts (we will show as a bar graph/histogram).
- * 
- * @author
+ * Used in {@link app.View} and {@link app.Controller}.
  *
  */
 public class DelayProfile {
@@ -22,7 +21,10 @@ public class DelayProfile {
 									// less than 5 mins,
 									// less than 10...
 	int[] frequencies = new int[numEl]; // [10,4,2,0,1] numbers of take off delays  for this flight
-
+	
+	/**
+	 * Creates an empty delay profile.
+	 */
 	public DelayProfile() {
 		for (int i = 0; i < numEl; i++) {
 			delays[i] = minDelay + i * delta;
@@ -48,6 +50,10 @@ public class DelayProfile {
 		}
 	}
 	
+	/**
+	 * returns the delays as a String, with html formatting, for use in {@link app.View}
+	 * @return
+	 */
 	public String delays(){
 		boolean primed = false;
 		StringBuilder sb = new StringBuilder();
@@ -67,6 +73,10 @@ public class DelayProfile {
 		return sb.toString();
 	}
 	
+	/**
+	 * returns the frequencies as a String with html formatting, for use in {@link app.View}
+	 * @return
+	 */
 	public String freqs(){
 		boolean primed = false;
 		StringBuilder sb = new StringBuilder();

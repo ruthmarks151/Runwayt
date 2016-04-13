@@ -6,7 +6,6 @@ import java.util.Random;
 /**
  * The Estimation class calculates the expected delays of the flight. The important
  * function here is findDelay which calculates the DelayProfile.
- * @author
  *
  */
 public class Estimation {
@@ -17,6 +16,13 @@ public class Estimation {
 	private static final int nSamples = 100;
 	private static final Random r = new Random();
 	
+	/**
+	 * Based on the origin airport, destination airport and airline, calculate a delay profile. 
+	 * @param origin airport
+	 * @param destination airport
+	 * @param airline
+	 * @return A delay profile, with the expected delays.
+	 */
 	public static DelayProfile findDelay(String origin, String destination, String airline) {
 		Date today = new Date(2016, 1, 15);
 		DelayProfile dProfile = new DelayProfile();
@@ -29,28 +35,15 @@ public class Estimation {
 		return dProfile;
 	}
 	
-	public static double rand(){
+	private static double rand(){
 		return r.nextGaussian();
 	}
 	
-	public static Date sampleDate(Date mean){
+	private static Date sampleDate(Date mean){
 		Date sample = new Date();
 		//sample.setYear(sample.getYear());
 		sample.setTime(mean.getTime() + (int)(rand() * stdevHours) * HOUR_IN_MILLISECS + (int)(rand() * stdevDays) * DAY_IN_MILLISECS);
 		return sample;
-	}
-	
-	/*
-	 * use some private functions to pick a random time, day, year from the profile
-	 * 
-	 */
-	/**
-	 * This is probably a function to find the delay for one event of the flight.
-	 * @param event
-	 * @return
-	 */
-	private static int getEventDelay(FlightEvent event) {
-		return 0;
 	}
 
 }

@@ -12,13 +12,16 @@ import java.nio.file.Paths;
 import java.util.Date;
 
 /**
- * 
- * @author Tanya
+ * Uses {@link app.View}, {@link app.Estimation}, {@link app.DelayProfile}, 
+ * {@link app.DataAccess} and {@link app.DataRead}.
  *
  */
 public class Controller {
 
-	// options, get, head: idempotent and safe
+	/**
+	 * The main function, which runs the program.
+	 * @param args does nothing
+	 */
 	public static void main(String[] args) {
 		System.out.println("Setting up server");
 		DataAccess.prepare();
@@ -73,21 +76,21 @@ public class Controller {
 		});
 	}
 
-	private String renderContent(String htmlFile) {
-		try {
-			// If you are using maven then your files
-			// will be in a folder called resources.
-			// getResource() gets that folder
-			// and any files you specify.
-			URL url = getClass().getResource(htmlFile);
-
-			// Return a String which has all
-			// the contents of the file.
-			Path path = Paths.get(url.toURI());
-			return new String(Files.readAllBytes(path), Charset.defaultCharset());
-		} catch (IOException | URISyntaxException e) {
-			// Add your own exception handlers here.
-		}
-		return null;
-	}
+//	private String renderContent(String htmlFile) {
+//		try {
+//			// If you are using maven then your files
+//			// will be in a folder called resources.
+//			// getResource() gets that folder
+//			// and any files you specify.
+//			URL url = getClass().getResource(htmlFile);
+//
+//			// Return a String which has all
+//			// the contents of the file.
+//			Path path = Paths.get(url.toURI());
+//			return new String(Files.readAllBytes(path), Charset.defaultCharset());
+//		} catch (IOException | URISyntaxException e) {
+//			// Add your own exception handlers here.
+//		}
+//		return null;
+//	}
 }
